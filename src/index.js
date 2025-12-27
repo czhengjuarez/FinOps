@@ -1,5 +1,3 @@
-import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
-
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -9,28 +7,23 @@ export default {
       return handleAPIRequest(request, env, url);
     }
     
-    // Serve static assets
+    // Serve static assets using the new Assets binding
     try {
-      return await getAssetFromKV(
-        {
-          request,
-          waitUntil: ctx.waitUntil.bind(ctx),
-        },
-        {
-          ASSET_NAMESPACE: env.__STATIC_CONTENT,
-          ASSET_MANIFEST: JSON.parse(env.__STATIC_CONTENT_MANIFEST),
-          mapRequestToAsset: (req) => {
-            const url = new URL(req.url);
-            
-            // If the path doesn't have a file extension, serve index.html (SPA routing)
-            if (!url.pathname.includes('.')) {
-              url.pathname = '/index.html';
-            }
-            
-            return new Request(url.toString(), req);
-          },
-        }
-      );
+      // Try to fetch the asset
+      const asset = await env.ASSETS.fetch(request);
+      
+      // If asset found, return it
+      if (asset.status !== 404) {
+        return asset;
+      }
+      
+      // If not found and no file extension, serve index.html for SPA routing
+      if (!url.pathname.includes('.')) {
+        const indexRequest = new Request(`${url.origin}/index.html`, request);
+        return await env.ASSETS.fetch(indexRequest);
+      }
+      
+      return asset;
     } catch (e) {
       return new Response('Not Found', { status: 404 });
     }

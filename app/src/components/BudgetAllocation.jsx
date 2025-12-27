@@ -138,7 +138,7 @@ const BudgetAllocation = () => {
           <div className="grid grid-cols-2 gap-4">
             {['q1', 'q2', 'q3', 'q4'].map((quarter) => (
               <div key={quarter}>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   {quarter.toUpperCase()} Budget ($)
                 </label>
                 <input
@@ -197,7 +197,7 @@ const BudgetAllocation = () => {
           {exceptions.map((exc, index) => (
             <div key={exc.id} className="mb-6 pb-6 border-b border-gray-200 last:border-0">
               <div className="mb-3">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Exception {index + 1} Name
                 </label>
                 <input
@@ -271,7 +271,7 @@ const BudgetAllocation = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Team Members</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Team Members</label>
                 <input
                   type="number"
                   value={newFocusArea.members}
@@ -283,7 +283,7 @@ const BudgetAllocation = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Allocation Method</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Allocation Method</label>
                 <select
                   value={newFocusArea.method}
                   onChange={(e) => setNewFocusArea({ ...newFocusArea, method: e.target.value })}
@@ -298,7 +298,7 @@ const BudgetAllocation = () => {
 
             {newFocusArea.method === 'custom' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Custom Annual Amount ($)
                 </label>
                 <input
@@ -314,7 +314,7 @@ const BudgetAllocation = () => {
 
             {newFocusArea.method === 'percentage' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Percentage of Remaining Budget (%)
                 </label>
                 <input
@@ -343,7 +343,7 @@ const BudgetAllocation = () => {
 
             <button
               onClick={addFocusArea}
-              className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded-lg transition-colors"
+              className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-colors"
             >
               Add Focus Area
             </button>
@@ -406,24 +406,24 @@ const BudgetAllocation = () => {
       </div>
 
       {/* Overview Summary */}
-      <div className="bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow-lg p-6">
-        <h3 className="text-xl font-bold mb-4">Complete Budget Overview</h3>
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Complete Budget Overview</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white/10 rounded-lg p-4">
-            <h4 className="text-sm opacity-90 mb-1">Total Annual Budget</h4>
-            <div className="text-2xl font-bold">{formatCurrency(totalAnnualBudget)}</div>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+            <h4 className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Annual Budget</h4>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">{formatCurrency(totalAnnualBudget)}</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-4">
-            <h4 className="text-sm opacity-90 mb-1">Holdback Reserve</h4>
-            <div className="text-2xl font-bold">{formatCurrency(totalHoldback)}</div>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+            <h4 className="text-sm text-gray-600 dark:text-gray-400 mb-1">Holdback Reserve</h4>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">{formatCurrency(totalHoldback)}</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-4">
-            <h4 className="text-sm opacity-90 mb-1">Exception Allocations</h4>
-            <div className="text-2xl font-bold">{formatCurrency(totalExceptions)}</div>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+            <h4 className="text-sm text-gray-600 dark:text-gray-400 mb-1">Exception Allocations</h4>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">{formatCurrency(totalExceptions)}</div>
           </div>
-          <div className="bg-white/10 rounded-lg p-4">
-            <h4 className="text-sm opacity-90 mb-1">Focus Area Budgets</h4>
-            <div className="text-2xl font-bold">{formatCurrency(totalAllocated)}</div>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+            <h4 className="text-sm text-gray-600 dark:text-gray-400 mb-1">Focus Area Budgets</h4>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white">{formatCurrency(totalAllocated)}</div>
           </div>
         </div>
       </div>
@@ -432,7 +432,7 @@ const BudgetAllocation = () => {
       <div className="flex justify-center">
         <button
           onClick={handleExport}
-          className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md"
+          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md"
         >
           Export Budget Plan to CSV
         </button>

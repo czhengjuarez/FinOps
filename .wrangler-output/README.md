@@ -1,0 +1,1 @@
+This folder contains the built output assets for the worker "finops" generated at 2025-12-27T19:39:43.341Z.

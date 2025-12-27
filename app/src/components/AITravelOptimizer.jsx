@@ -32,11 +32,11 @@ const AITravelOptimizer = ({ estimateData }) => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border-2 border-purple-200 dark:border-purple-900 p-6">
+    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-600 p-6">
       <div className="flex items-center gap-2 mb-4">
-        <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+        <Sparkles className="w-6 h-6 text-gray-600 dark:text-gray-400" />
         <h3 className="text-lg font-bold text-gray-900 dark:text-white">AI Travel Optimizer</h3>
-        <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full">BETA</span>
+        <span className="text-xs bg-gray-600 text-white px-2 py-1 rounded-full">BETA</span>
       </div>
       
       <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
@@ -46,7 +46,7 @@ const AITravelOptimizer = ({ estimateData }) => {
       <button
         onClick={getOptimization}
         disabled={loading}
-        className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+        className="w-full bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
       >
         {loading ? (
           <>

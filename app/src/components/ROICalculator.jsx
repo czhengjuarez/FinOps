@@ -85,7 +85,7 @@ const DesignSystemCalculator = () => {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Design System Investment</h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Number of Designers</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Number of Designers</label>
             <input
               type="number"
               value={inputs.designers}
@@ -94,7 +94,7 @@ const DesignSystemCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Average Designer Hourly Rate ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Average Designer Hourly Rate ($)</label>
             <input
               type="number"
               value={inputs.hourlyRate}
@@ -103,7 +103,7 @@ const DesignSystemCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Hours Spent Creating Components Weekly (per designer)
             </label>
             <input
@@ -114,7 +114,7 @@ const DesignSystemCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Design System Implementation Cost ($)
             </label>
             <input
@@ -125,7 +125,7 @@ const DesignSystemCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Expected Efficiency Gain (%)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expected Efficiency Gain (%)</label>
             <p className="text-xs text-gray-600 mb-2">
               (Target Efficiency - Baseline Efficiency) / Baseline Efficiency × 100%
             </p>
@@ -203,7 +203,7 @@ const ToolingCalculator = () => {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Design Tooling Investment</h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Number of Design Tool Users</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Number of Design Tool Users</label>
             <input
               type="number"
               value={inputs.users}
@@ -212,7 +212,7 @@ const ToolingCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Annual Tool Cost ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Annual Tool Cost ($)</label>
             <input
               type="number"
               value={inputs.annualCost}
@@ -221,7 +221,7 @@ const ToolingCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Time Saved Per User Per Week (hours)
             </label>
             <input
@@ -232,7 +232,7 @@ const ToolingCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Average User Hourly Rate ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Average User Hourly Rate ($)</label>
             <input
               type="number"
               value={inputs.hourlyRate}
@@ -241,7 +241,7 @@ const ToolingCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Setup/Training Cost ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Setup/Training Cost ($)</label>
             <input
               type="number"
               value={inputs.setupCost}
@@ -301,7 +301,7 @@ const HeadcountCalculator = () => {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Headcount Planning Calculator</h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Current Designer Count</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Designer Count</label>
             <input
               type="number"
               value={inputs.currentCount}
@@ -310,7 +310,7 @@ const HeadcountCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Projects in Queue</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Projects in Queue</label>
             <input
               type="number"
               value={inputs.projectsQueue}
@@ -319,7 +319,7 @@ const HeadcountCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Average Project Duration (weeks)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Average Project Duration (weeks)</label>
             <input
               type="number"
               value={inputs.projectDuration}
@@ -328,7 +328,7 @@ const HeadcountCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Desired Completion Timeline (weeks)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Desired Completion Timeline (weeks)</label>
             <input
               type="number"
               value={inputs.desiredTimeline}
@@ -337,7 +337,7 @@ const HeadcountCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">New Designer Annual Cost ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Designer Annual Cost ($)</label>
             <input
               type="number"
               value={inputs.designerCost}
@@ -346,7 +346,7 @@ const HeadcountCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Revenue Per Project ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Revenue Per Project ($)</label>
             <input
               type="number"
               value={inputs.revenuePerProject}
@@ -407,7 +407,7 @@ const BudgetCalculator = () => {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Budget Allocation Framework</h3>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Total Annual Design Budget ($)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Total Annual Design Budget ($)</label>
             <input
               type="number"
               value={inputs.totalBudget}
@@ -416,7 +416,7 @@ const BudgetCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Headcount % (recommended: 70-80%)
             </label>
             <input
@@ -428,7 +428,7 @@ const BudgetCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Tools & Software % (recommended: 5-10%)
             </label>
             <input
@@ -440,7 +440,7 @@ const BudgetCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Training & Development % (recommended: 5-10%)
             </label>
             <input
@@ -452,7 +452,7 @@ const BudgetCalculator = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Operations & Misc % (recommended: 5-15%)
             </label>
             <input

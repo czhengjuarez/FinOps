@@ -425,6 +425,9 @@ const BudgetForecast = () => {
         </div>
       </div>
 
+      {/* AI Strategic Insights */}
+      <AIStrategicInsights budgetData={forecastData} previousYear={previousYear} />
+
       {/* Import Data Section */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Import Data from Other Tabs</h3>
@@ -495,9 +498,6 @@ const BudgetForecast = () => {
           </div>
         </div>
       )}
-
-      {/* AI Strategic Insights */}
-      <AIStrategicInsights budgetData={forecastData} previousYear={previousYear} />
 
       {/* Previous Year Inputs */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
@@ -874,7 +874,7 @@ const BudgetForecast = () => {
       <div className="flex justify-center">
         <button
           onClick={handleExport}
-          className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md"
+          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-colors shadow-md"
         >
           Export to CSV
         </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Sparkles, Loader2, Brain, Target, AlertCircle, TrendingUp } from 'lucide-react';
+import { Sparkles, Loader2, Target, AlertCircle, TrendingUp } from 'lucide-react';
 import { aiService } from '../utils/aiService';
 
 const AIStrategicInsights = ({ budgetData, previousYear }) => {
@@ -30,11 +30,11 @@ const AIStrategicInsights = ({ budgetData, previousYear }) => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-700 rounded-lg border-2 border-indigo-200 dark:border-indigo-900 p-6">
+    <div className="bg-gray-50 dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-600 p-6">
       <div className="flex items-center gap-2 mb-4">
-        <Brain className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+        <Sparkles className="w-6 h-6 text-gray-600 dark:text-gray-400" />
         <h3 className="text-lg font-bold text-gray-900 dark:text-white">AI Strategic Advisor</h3>
-        <span className="text-xs bg-indigo-600 text-white px-2 py-1 rounded-full">BETA</span>
+        <span className="text-xs bg-gray-600 text-white px-2 py-1 rounded-full">BETA</span>
       </div>
       
       <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
@@ -57,7 +57,7 @@ const AIStrategicInsights = ({ budgetData, previousYear }) => {
       <button
         onClick={getInsights}
         disabled={loading}
-        className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+        className="w-full bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
       >
         {loading ? (
           <>
