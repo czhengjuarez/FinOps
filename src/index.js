@@ -1,7 +1,7 @@
 import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     
     // Handle API routes for AI features
@@ -11,21 +11,26 @@ export default {
     
     // Serve static assets
     try {
-      return await getAssetFromKV({
-        request,
-        waitUntil(promise) { return promise; }
-      }, {
-        mapRequestToAsset: req => {
-          const url = new URL(req.url);
-          
-          // If the path doesn't have a file extension, serve index.html (SPA routing)
-          if (!url.pathname.includes('.')) {
-            url.pathname = '/index.html';
-          }
-          
-          return new Request(url.toString(), req);
+      return await getAssetFromKV(
+        {
+          request,
+          waitUntil: ctx.waitUntil.bind(ctx),
+        },
+        {
+          ASSET_NAMESPACE: env.__STATIC_CONTENT,
+          ASSET_MANIFEST: JSON.parse(env.__STATIC_CONTENT_MANIFEST),
+          mapRequestToAsset: (req) => {
+            const url = new URL(req.url);
+            
+            // If the path doesn't have a file extension, serve index.html (SPA routing)
+            if (!url.pathname.includes('.')) {
+              url.pathname = '/index.html';
+            }
+            
+            return new Request(url.toString(), req);
+          },
         }
-      });
+      );
     } catch (e) {
       return new Response('Not Found', { status: 404 });
     }

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plane } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import AITravelOptimizer from './AITravelOptimizer';
 
 const TravelExpenses = () => {
   const [activeMode, setActiveMode] = useState('estimate');
@@ -263,6 +264,16 @@ const EstimateMode = () => {
           </div>
         </div>
       </div>
+
+      {/* AI Travel Optimizer */}
+      <AITravelOptimizer estimateData={{
+        domesticTravelers: inputs.domesticTravelers,
+        internationalTravelers: inputs.internationalTravelers,
+        nights: inputs.nights,
+        location: inputs.location,
+        totalCost: totalCost,
+        dates: undefined
+      }} />
     </div>
   );
 };

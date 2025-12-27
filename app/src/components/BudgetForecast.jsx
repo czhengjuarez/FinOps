@@ -3,6 +3,7 @@ import { BarChart3, Download, RefreshCw } from 'lucide-react';
 import { formatCurrency, formatPercentage } from '../utils/formatters';
 import { exportToCSV } from '../utils/exportCSV';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import AIStrategicInsights from './AIStrategicInsights';
 
 const BudgetForecast = () => {
   const [rawForecastData, setRawForecastData] = useLocalStorage('budgetForecast', {
@@ -494,6 +495,9 @@ const BudgetForecast = () => {
           </div>
         </div>
       )}
+
+      {/* AI Strategic Insights */}
+      <AIStrategicInsights budgetData={forecastData} previousYear={previousYear} />
 
       {/* Previous Year Inputs */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Target } from 'lucide-react';
 import { formatCurrency } from '../utils/formatters';
+import AIROIAnalyzer from './AIROIAnalyzer';
 
 const ROICalculator = () => {
   const [activeTab, setActiveTab] = useState('design-system');
@@ -161,6 +162,24 @@ const DesignSystemCalculator = () => {
           </div>
         </div>
       </div>
+
+      {/* AI ROI Analyzer */}
+      <AIROIAnalyzer roiData={{
+        investment: inputs.implementationCost,
+        timeSavings: {
+          hours: inputs.designers * inputs.componentHours * 4,
+          hourlyRate: inputs.hourlyRate
+        },
+        qualityImprovements: {
+          defectReduction: 30,
+          costPerDefect: 500
+        },
+        efficiencyGains: {
+          processImprovement: inputs.efficiencyGain,
+          currentCost: inputs.designers * inputs.hourlyRate * 40 * 52
+        },
+        context: 'Design System Implementation'
+      }} />
     </div>
   );
 };
