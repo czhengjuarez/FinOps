@@ -1,0 +1,9 @@
+name = "finops"
+main = "src/index.js"
+compatibility_date = "2024-12-27"
+
+[site]
+bucket = "./app/dist"
+
+[ai]
+binding = "AI"
