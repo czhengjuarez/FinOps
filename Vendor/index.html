@@ -1,0 +1,197 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor & Tooling Budget Tracker</title>
+    <meta name="description" content="Track and manage vendor contracts, tooling subscriptions, and consultation costs with renewal tracking and budget analysis.">
+    <meta name="keywords" content="vendor management, tooling budget, software subscriptions, consulting contracts, budget tracker">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Vendor & Tooling Budget Tracker</h1>
+            <p>Track vendor contracts, tooling subscriptions, and consultation costs with renewal analysis</p>
+            
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> This tool helps track vendor costs and renewals for budget planning. Always verify contract details and renewal terms directly with vendors before making final decisions.
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('tooling')">Tooling & Software</button>
+            <button class="tab" onclick="showTab('consultants')">Vendors & Consultants</button>
+            <button class="tab" onclick="showTab('overview')">Budget Overview</button>
+        </div>
+
+        <!-- Tooling Tab -->
+        <div id="tooling" class="tab-content active">
+            <div class="tracker-grid">
+                <div class="tracker-card">
+                    <h2>🛠️ Add Tooling/Software</h2>
+                    
+                    <div class="input-group">
+                        <label>Tool/Software Name</label>
+                        <input type="text" id="tool-name" placeholder="e.g., Figma, Adobe Creative Cloud">
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Contract Type</label>
+                            <select id="tool-type" onchange="toggleRenewalInfo('tool')">
+                                <option value="new">New Contract</option>
+                                <option value="renewal">Renewal</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Start/Renewal Date</label>
+                            <input type="date" id="tool-date">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Annual Cost ($)</label>
+                            <input type="number" id="tool-cost" placeholder="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Number of Licenses</label>
+                            <input type="number" id="tool-licenses" value="1" placeholder="1">
+                        </div>
+                    </div>
+
+                    <div id="tool-renewal-info" class="renewal-info">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label>Previous Year Cost ($)</label>
+                                <input type="number" id="tool-prev-cost" placeholder="0">
+                            </div>
+                            <div class="input-group">
+                                <label>Increase Amount ($)</label>
+                                <input type="number" id="tool-increase" placeholder="0" readonly>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Percentage Increase (%)</label>
+                            <input type="number" id="tool-increase-percent" placeholder="0" readonly>
+                        </div>
+                    </div>
+                    
+                    <button class="button" onclick="addTool()">Add Tool</button>
+                </div>
+
+                <div class="tracker-card">
+                    <h2>📋 Current Tools</h2>
+                    <div id="tools-list" class="vendor-list">
+                        <p style="color: #718096; text-align: center; padding: 20px;">No tools added yet. Add your first tool to get started.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consultants Tab -->
+        <div id="consultants" class="tab-content">
+            <div class="tracker-grid">
+                <div class="tracker-card">
+                    <h2>👥 Add Vendor/Consultant</h2>
+                    
+                    <div class="input-group">
+                        <label>Vendor/Consultant Name</label>
+                        <input type="text" id="vendor-name" placeholder="e.g., Design Agency, UX Consultant">
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Service Type</label>
+                            <select id="vendor-service">
+                                <option value="Design Consulting">Design Consulting</option>
+                                <option value="UX Research">UX Research</option>
+                                <option value="Design System">Design System</option>
+                                <option value="Training">Training</option>
+                                <option value="Development">Development</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Start Date</label>
+                            <input type="date" id="vendor-date">
+                        </div>
+                    </div>
+                    
+                    <div class="input-triple">
+                        <div class="input-group">
+                            <label>Contract Value ($)</label>
+                            <input type="number" id="vendor-cost" placeholder="0">
+                        </div>
+                        <div class="input-group">
+                            <label>Duration (months)</label>
+                            <input type="number" id="vendor-duration" placeholder="12">
+                        </div>
+                        <div class="input-group">
+                            <label>Monthly Rate ($)</label>
+                            <input type="number" id="vendor-monthly" placeholder="0" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Notes</label>
+                        <input type="text" id="vendor-notes" placeholder="Additional details or scope notes">
+                    </div>
+                    
+                    <button class="button" onclick="addVendor()">Add Vendor</button>
+                </div>
+
+                <div class="tracker-card">
+                    <h2>📋 Current Vendors</h2>
+                    <div id="vendors-list" class="vendor-list">
+                        <p style="color: #718096; text-align: center; padding: 20px;">No vendors added yet. Add your first vendor to get started.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content">
+            <div class="summary-card">
+                <h2>💰 Budget Summary</h2>
+                <div class="summary-stats">
+                    <div class="stat-item">
+                        <h4>Total Annual Tooling</h4>
+                        <div class="value" id="total-tooling">$0</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Total Vendor Contracts</h4>
+                        <div class="value" id="total-vendors">$0</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Combined Annual Budget</h4>
+                        <div class="value" id="total-budget">$0</div>
+                    </div>
+                    <div class="stat-item">
+                        <h4>Average Monthly Cost</h4>
+                        <div class="value" id="monthly-average">$0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h3>📥 Export Data</h3>
+                <p>Download your vendor and tooling data as spreadsheet files</p>
+                <div class="export-buttons">
+                    <button class="button export" onclick="exportToCSV('tools')">Export Tools to CSV</button>
+                    <button class="button export" onclick="exportToCSV('vendors')">Export Vendors to CSV</button>
+                    <button class="button export" onclick="exportToCSV('combined')">Export Combined Data</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Created by <a href="https://changying.substack.com" target="_blank">Chang Ying (Z) Zheng — Design Operations</a> | <a href="https://www.linkedin.com/in/changyingz/">Contact</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

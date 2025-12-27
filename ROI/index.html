@@ -1,0 +1,300 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Investment ROI Calculator</title>
+    <meta name="description" content="Calculate the return on investment for design systems, tools, headcount, and budget allocation with this comprehensive ROI calculator.">
+    <meta name="keywords" content="design ROI, design investment, design system ROI, design operations, business case">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Design Investment ROI Calculator</h1>
+            <p>Calculate the return on investment for design systems, tools, headcount, and budget allocation</p>
+            
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> Here is a simple ROI calculator built with Claude.ai. It is very basic, you will of course need to make your own customized version. But this calculator gives you some idea where to start and also gives you a rough number.
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('design-system')">Design System</button>
+            <button class="tab" onclick="showTab('tooling')">Tooling ROI</button>
+            <button class="tab" onclick="showTab('headcount')">Headcount Planning</button>
+            <button class="tab" onclick="showTab('budget')">Budget Allocation</button>
+        </div>
+
+        <!-- Design System Calculator -->
+        <div id="design-system" class="tab-content active">
+            <div class="calculator-grid">
+                <div class="calculator-card">
+                    <h2>📋 Design System Investment</h2>
+                    
+                    <div class="input-group">
+                        <label>Number of Designers</label>
+                        <input type="number" id="ds-designers" value="8" oninput="calculateDesignSystem()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Average Designer Hourly Rate ($)</label>
+                        <input type="number" id="ds-hourly-rate" value="75" oninput="calculateDesignSystem()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Hours Spent Creating Components Weekly (per designer)</label>
+                        <input type="number" id="ds-component-hours" value="5" oninput="calculateDesignSystem()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Design System Implementation Cost ($)</label>
+                        <input type="number" id="ds-implementation-cost" value="150000" oninput="calculateDesignSystem()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Expected Efficiency Gain (%)</label>
+                       <h6>Expected Efficiency Gain = (Target Efficiency - Baseline Efficiency) / Baseline Efficiency * 100%</h6>
+                        <input type="number" id="ds-efficiency-gain" value="40" oninput="calculateDesignSystem()">
+                    </div>
+                </div>
+
+                <div class="calculator-card">
+                    <h2>📊 Design System ROI Results</h2>
+                    
+                    <div class="result-box">
+                        <h3>Annual Savings</h3>
+                        <div class="result-value" id="ds-annual-savings">$0</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Payback Period</h3>
+                        <div class="result-value" id="ds-payback-period">0 months</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>3-Year ROI</h3>
+                        <div class="result-value" id="ds-three-year-roi">0%</div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Key Benefits:</strong> Reduced design time, consistent UI, faster development, lower maintenance costs
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tooling ROI Calculator -->
+        <div id="tooling" class="tab-content">
+            <div class="calculator-grid">
+                <div class="calculator-card">
+                    <h2>🛠️ Design Tooling Investment</h2>
+                    
+                    <div class="input-group">
+                        <label>Number of Design Tool Users</label>
+                        <input type="number" id="tool-users" value="12" oninput="calculateTooling()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Annual Tool Cost ($)</label>
+                        <input type="number" id="tool-annual-cost" value="15000" oninput="calculateTooling()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Time Saved Per User Per Week (hours)</label>
+                        <input type="number" id="tool-time-saved" value="3" oninput="calculateTooling()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Average User Hourly Rate ($)</label>
+                        <input type="number" id="tool-hourly-rate" value="70" oninput="calculateTooling()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Setup/Training Cost ($)</label>
+                        <input type="number" id="tool-setup-cost" value="8000" oninput="calculateTooling()">
+                    </div>
+                </div>
+
+                <div class="calculator-card">
+                    <h2>📊 Tooling ROI Results</h2>
+                    
+                    <div class="result-box">
+                        <h3>Annual Time Savings Value</h3>
+                        <div class="result-value" id="tool-annual-savings">$0</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Total Annual Cost</h3>
+                        <div class="result-value" id="tool-total-cost">$0</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Annual ROI</h3>
+                        <div class="result-value" id="tool-annual-roi">0%</div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Additional Benefits:</strong> Improved collaboration, reduced errors, better file management, enhanced capabilities
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Headcount Planning -->
+        <div id="headcount" class="tab-content">
+            <div class="calculator-grid">
+                <div class="calculator-card">
+                    <h2>👥 Headcount Planning Calculator</h2>
+                    
+                    <div class="input-group">
+                        <label>Current Designer Count</label>
+                        <input type="number" id="hc-current-count" value="6" oninput="calculateHeadcount()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Projects in Queue</label>
+                        <input type="number" id="hc-projects-queue" value="12" oninput="calculateHeadcount()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Average Project Duration (weeks)</label>
+                        <input type="number" id="hc-project-duration" value="6" oninput="calculateHeadcount()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Desired Completion Timeline (weeks)</label>
+                        <input type="number" id="hc-desired-timeline" value="24" oninput="calculateHeadcount()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>New Designer Annual Cost ($)</label>
+                        <input type="number" id="hc-designer-cost" value="140000" oninput="calculateHeadcount()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Revenue Per Project ($)</label>
+                        <input type="number" id="hc-revenue-per-project" value="500000" oninput="calculateHeadcount()">
+                    </div>
+                </div>
+
+                <div class="calculator-card">
+                    <h2>📊 Headcount Analysis</h2>
+                    
+                    <div class="result-box">
+                        <h3>Recommended Team Size</h3>
+                        <div class="result-value" id="hc-recommended-size">0 designers</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Additional Hires Needed</h3>
+                        <div class="result-value" id="hc-additional-hires">0 designers</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Investment vs. Revenue Impact</h3>
+                        <div class="result-value" id="hc-investment-impact">$0</div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Considerations:</strong> Onboarding time, skill matching, team dynamics, budget constraints
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Allocation -->
+        <div id="budget" class="tab-content">
+            <div class="calculator-grid">
+                <div class="calculator-card">
+                    <h2>💰 Budget Allocation Framework</h2>
+                    
+                    <div class="input-group">
+                        <label>Total Annual Design Budget ($)</label>
+                        <input type="number" id="budget-total" value="800000" oninput="calculateBudget()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Headcount % (recommended: 70-80%)</label>
+                        <input type="number" id="budget-headcount-percent" value="75" max="100" oninput="calculateBudget()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Tools & Software % (recommended: 5-10%)</label>
+                        <input type="number" id="budget-tools-percent" value="8" max="100" oninput="calculateBudget()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Training & Development % (recommended: 5-10%)</label>
+                        <input type="number" id="budget-training-percent" value="7" max="100" oninput="calculateBudget()">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Operations & Misc % (recommended: 5-15%)</label>
+                        <input type="number" id="budget-ops-percent" value="10" max="100" oninput="calculateBudget()">
+                    </div>
+                </div>
+
+                <div class="calculator-card">
+                    <h2>📊 Budget Breakdown</h2>
+                    
+                    <div class="result-box">
+                        <h3>Headcount Budget</h3>
+                        <div class="result-value" id="budget-headcount-amount">$0</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Tools & Software</h3>
+                        <div class="result-value" id="budget-tools-amount">$0</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Training & Development</h3>
+                        <div class="result-value" id="budget-training-amount">$0</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Operations & Miscellaneous</h3>
+                        <div class="result-value" id="budget-ops-amount">$0</div>
+                    </div>
+
+                    <div class="result-box">
+                        <h3>Total Allocated</h3>
+                        <div class="result-value" id="budget-total-allocated">$0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <h2>💡 Using Your ROI Calculations</h2>
+            <p>These calculations provide data-driven support for your design investment proposals. Use them to:</p>
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <h4>Present to Leadership</h4>
+                    <div class="value">Show clear ROI</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Compare Options</h4>
+                    <div class="value">Evaluate investments</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Track Progress</h4>
+                    <div class="value">Measure success</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Build Business Cases</h4>
+                    <div class="value">Support with data</div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Created by <a href="https://changying.substack.com" target="_blank">Chang Ying (Z) Zheng — Design Operations</a> | <a href="https://www.linkedin.com/in/changyingz/">Contact</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .bg-brand-primary { background-color: #8F1F57; }
+        .bg-brand-secondary { background-color: #DD388B; }
+        .bg-brand-accent { background-color: #F5DEEA; }
+        .text-brand-primary { color: #8F1F57; }
+        .border-brand-primary { border-color: #8F1F57; }
+        .ring-brand-secondary:focus { --tw-ring-color: #DD388B; }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 80vw;
+            max-width: 500px;
+        }
+        input::placeholder {
+            color: #9ca3af;
+        }
+        .form-input {
+            @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-primary focus:ring focus:ring-brand-secondary focus:ring-opacity-50;
+        }
+        .trip-input {
+             @apply w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-brand-primary focus:ring-brand-secondary focus:ring-opacity-50;
+        }
+        .disclaimer {
+           background: #F5DEEA;
+           border: 2px solid #8F1F57;
+           border-radius: 8px;
+           padding: 15px;
+           margin-top: 20px;
+           font-size: 0.9rem;
+           color: #8F1F57;
+           text-align: left;
+        }
+        .estimator-card {
+            background: white;
+           border-radius: 12px;
+           padding: 30px;
+           box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+           border-left: 6px solid #8F1F57;
+        }
+
+        .estimator-card h2, .estimator-card h3 {
+           color: #1a202c;
+           margin-bottom: 20px;
+           font-size: 1.5rem;
+           display: flex;
+           align-items: center;
+           gap: 10px;
+        }
+        .input-group {
+   margin-bottom: 20px;
+}
+
+.input-group label {
+   display: block;
+   margin-bottom: 8px;
+   font-weight: 600;
+   color: #4a5568;
+}
+
+.input-group input, .input-group select {
+   width: 100%;
+   padding: 12px;
+   border: 2px solid #e2e8f0;
+   border-radius: 8px;
+   font-size: 16px;
+   transition: border-color 0.3s;
+}
+
+.input-group input:focus, .input-group select:focus {
+   outline: none;
+   border-color: #8F1F57;
+}
+
+.input-group small {
+   display: block;
+   margin-top: 5px;
+   font-size: 0.85rem;
+   color: #718096;
+}
+
+.input-row {
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: 15px;
+}
+.footer {
+   text-align: center;
+   margin-top: 60px;
+   padding: 30px;
+   background: white;
+   border-radius: 12px;
+   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+   color: #718096;
+}
+
+.footer a {
+   color: #8F1F57;
+   text-decoration: none;
+}
+
+.footer a:hover {
+   text-decoration: underline;
+}
+    

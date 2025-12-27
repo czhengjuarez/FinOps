@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Team Budget Forecasting Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <!-- Header -->
+        <header class="mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-brand-primary">Design Team Forecast</h1>
+                    <p class="text-gray-600 mt-1">Plan your annual budget for headcount, T&E, and vendors.</p>
+                </div>
+                <button id="export-csv" class="mt-4 md:mt-0 bg-brand-primary hover:bg-opacity-90 text-white font-bold py-2 px-4 rounded-lg transition-colors shadow-md">
+                    Export to CSV
+                </button>
+            </div>
+            <div class="disclaimer">
+               <strong>Disclaimer:</strong> This tool helps plan budget allocations for organizational planning. Always verify final allocations with finance teams and adjust based on actual business needs.
+           </div>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Inputs -->
+            <div class="lg:col-span-1 space-y-6 relative z-10">
+                 <!-- Previous Year Inputs -->
+             
+                    <div class="estimator-card">
+                    <h3 class="text-lg font-semibold text-brand-primary mb-4">Previous Year Actuals</h3>
+                    
+                             <div class="input-group">
+                       <div>
+                            <label for="prev-year-hc" class="block text-sm font-medium text-gray-700">Total Headcount Cost ($)</label>
+                            <input type="number" id="prev-year-hc" class="form-input">
+                        </div>
+                        <div>
+                            <label for="prev-year-tne" class="block text-sm font-medium text-gray-700">Total T&E Cost ($)</label>
+                            <input type="number" id="prev-year-tne" class="form-input">
+                        </div>
+                        <div>
+                            <label for="prev-year-vendors" class="block text-sm font-medium text-gray-700">Total Vendor Cost ($)</label>
+                            <input type="number" id="prev-year-vendors" class="form-input">
+                        </div>
+                        <div>
+                            <label for="prev-year-consultants" class="block text-sm font-medium text-gray-700">Total Consultant Cost ($)</label>
+                            <input type="number" id="prev-year-consultants" class="form-input">
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-xl font-semibold text-gray-800 border-b pb-2">Current Year Forecast Inputs</h2>
+
+                <!-- Headcount Card -->
+                <div class="estimator-card">
+                    <h3 class="text-lg font-semibold text-brand-primary mb-4">1. Headcount (HC)</h3>
+                    <div class="input-row">
+                       <div class="input-group">
+                            <label for="hc-count" class="block text-sm font-medium text-gray-700">Number of People</label>
+                            <input type="number" id="hc-count" class="form-input">
+                        </div>
+                        <div class="input-group">
+                             <label for="hc-avg-salary" class="block text-sm font-medium text-gray-700">Average Base Salary ($)</label>
+                            <input type="number" id="hc-avg-salary" class="form-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="hc-benefits-rate" class="block text-sm font-medium text-gray-700">Benefits & Tax Rate (%)</label>
+                            <input type="number" id="hc-benefits-rate" step="0.01" class="form-input">
+                        </div>
+                    </div>
+                    <button id="toggle-hc-planner-btn" class="mt-4 w-full bg-brand-accent text-brand-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-80 transition-colors">
+                        HC Contract-to-Hire Planner
+                    </button>
+                </div>
+                
+                <!-- In-page HC Planner -->
+                <div id="hc-planner-container" class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                     <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-xl font-bold text-brand-primary">HC "What-If" Planner</h3>
+                        <button id="close-hc-planner-btn" class="text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+                    </div>
+                    <p class="text-gray-600 -mt-4 mb-6 text-sm">Plan breaking even on a single role's budget. This does not affect your main forecast.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+
+                             <h4 class="text-lg font-semibold text-gray-800">1. Define Budget & Contract</h4>
+                             <label for="planner-total-budget" class="block text-sm font-medium text-gray-700">Total Budget (planned)</label>
+                            <input type="number" id="planner-total-budget" class="form-input" placeholder="Total Annual Budget for Role ($)">
+                            <label for="planner-contract-months" class="block text-sm font-medium text-gray-700">Contract Month (<12)</label>
+                            <input type="number" id="planner-contract-months" class="form-input" min="0" max="12" placeholder="Contractor Months">
+                            <label for="planner-contract-rate" class="block text-sm font-medium text-gray-700">Contractor Monthly Rate</label>
+                            <input type="number" id="planner-contract-rate" class="form-input" placeholder="Contractor Monthly Rate ($)">
+                        </div>
+                        <div class="bg-brand-accent p-6 rounded-lg">
+                            <h4 class="text-lg font-semibold text-brand-primary">2. Break-Even Results</h4>
+                            <div class="mt-4 space-y-4">
+                                <div>
+                                    <p class="text-sm text-gray-700">Total Contractor Cost</p>
+                                    <p id="planner-result-contract-cost" class="text-xl font-bold text-brand-primary">$0</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-700">Remaining Budget for FTE</p>
+                                    <p id="planner-result-remaining" class="text-xl font-bold text-brand-primary">$0</p>
+                                </div>
+                                <div class="border-t border-brand-primary border-opacity-30 pt-4">
+                                    <p class="text-sm text-gray-700">Equivalent FTE Annual Salary</p>
+                                    <p id="planner-result-fte-salary" class="text-2xl font-extrabold text-brand-primary">$0</p>
+                                    <p id="planner-result-fte-months" class="text-xs text-gray-600">for the remaining 12 months</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- T&E Card -->
+                <div class="estimator-card">
+                    <h3 class="text-lg font-semibold text-brand-primary mb-4">2. Travel & Expenses (T&E)</h3>
+                    <div class="space-y-6">
+                        <!-- Individual Travel -->
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">Individual Travel</h4>
+                             <div class="grid grid-cols-6 gap-2 text-center text-xs font-bold text-gray-500 mb-1 px-1">
+                                <div class="col-span-2">Trip Name</div>
+                                <div>Flight</div>
+                                <div>Hotel</div>
+                                <div>Ground</div>
+                                <div>Per Diem</div>
+                            </div>
+                            <div id="individual-trips-inputs" class="space-y-3"></div>
+                            <button id="add-trip-btn" class="mt-2 text-sm text-brand-primary font-semibold hover:underline">+ Add Individual Trip</button>
+                        </div>
+                        <!-- Team Get-Together -->
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">Team Get-Together</h4>
+                             <div class="space-y-4">
+                                <div>
+                                    <h5 class="text-sm font-semibold text-gray-600 mb-2">Group Travel</h5>
+                                     <div class="input-group">
+                                        <div>
+                                            <label for="tne-group-attendees" class="block text-sm font-medium text-gray-700"># of Attendees</label>
+                                            <input type="number" id="tne-group-attendees" class="form-input">
+                                        </div>
+                                        <div>
+                                            <label for="tne-group-flight" class="block text-sm font-medium text-gray-700">Avg. Flight Cost ($)</label>
+                                            <input type="number" id="tne-group-flight" class="form-input">
+                                        </div>
+                                        <div>
+                                            <label for="tne-group-hotel" class="block text-sm font-medium text-gray-700">Avg. Hotel/Night ($)</label>
+                                            <input type="number" id="tne-group-hotel" class="form-input">
+                                        </div>
+                                        <div>
+                                            <label for="tne-group-nights" class="block text-sm font-medium text-gray-700">Avg. Nights</label>
+                                            <input type="number" id="tne-group-nights" class="form-input">
+                                        </div>
+                                        <div>
+                                            <label for="tne-group-perdiem" class="block text-sm font-medium text-gray-700">Per Diem/Day ($)</label>
+                                            <input type="number" id="tne-group-perdiem" class="form-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h5 class="text-sm font-semibold text-gray-600 mb-2">Team Activities</h5>
+                                   <div class="input-group">
+                                        <div>
+
+                                            <label for="tne-team-activity" class="block text-sm font-medium text-gray-700">Activity Cost/Person ($)</label>
+                                            <input type="number" id="tne-team-activity" class="form-input">
+                                        </div>
+                                        <div>
+                                            <label for="tne-team-dinner" class="block text-sm font-medium text-gray-700">Dinner Cost/Person ($)</label>
+                                            <input type="number" id="tne-team-dinner" class="form-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vendor Costs Card -->
+                <div class="estimator-card">
+                    <h3 class="text-lg font-semibold text-brand-primary mb-4">3. Vendor Costs</h3>
+                    <div id="vendor-inputs" class="input-group"></div>
+                    <button id="add-vendor-btn" class="mt-2 text-sm text-brand-primary font-semibold hover:underline">+ Add Vendor</button>
+                </div>
+
+                <!-- Consultant Costs Card -->
+                <div class="estimator-card">
+                    <h3 class="text-lg font-semibold text-brand-primary mb-4">4. Consultant Costs</h3>
+                    <div id="consultant-inputs" class="input-group"></div>
+                    <button id="add-consultant-btn" class="mt-2 text-sm text-brand-primary font-semibold hover:underline">+ Add Consultant</button>
+                </div>
+            </div>
+
+            <!-- Right Column: Summary & Breakdown -->
+            <div class="lg:col-span-2">
+                <!-- Summary Totals -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-brand-accent p-6 rounded-xl text-center">
+                        <h4 class="text-sm font-medium text-brand-primary uppercase tracking-wider">Total Forecast</h4>
+                        <p id="summary-total" class="text-4xl font-bold text-brand-primary mt-2">$0</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl text-center border border-gray-200">
+                        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider">YoY Change</h4>
+                        <p id="summary-yoy" class="text-4xl font-bold text-gray-800 mt-2">0%</p>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 text-center">Cost Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="cost-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Detailed Breakdown Table -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
+                     <h3 class="text-lg font-semibold text-gray-800 p-6">Detailed Breakdown</h3>
+                    <table class="min-w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="py-3 px-6 text-left font-semibold text-gray-600 uppercase">Line Item</th>
+                                <th class="py-3 px-6 text-right font-semibold text-gray-600 uppercase">Current Year</th>
+                                <th class="py-3 px-6 text-right font-semibold text-gray-600 uppercase">Previous Year</th>
+                                <th class="py-3 px-6 text-right font-semibold text-gray-600 uppercase">Variance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="breakdown-table-body" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+          <footer class="footer">
+           <p>Created by <a href="https://changying.substack.com" target="_blank">Chang Ying (Z) Zheng — Design Operations</a> | <a href="https://www.linkedin.com/in/changyingz/" target="_blank">Contact</a></p>
+       </footer>
+    </div>
+
+    <script>
+    // --- DATA ---
+    let forecastData = {
+        headcount: { count: 65, avgSalary: 120000, benefitsRate: 0.28 },
+        tne: {
+            individualTrips: [
+                { id: 101, name: "Q1 Conference", flight: 800, hotel: 1100, ground: 150, perDiem: 375 },
+            ],
+            groupTravel: {
+                attendees: 10,
+                avgFlight: 750,
+                hotelPerNight: 250,
+                nights: 3,
+                perDiem: 75,
+            },
+            teamActivities: {
+                activityPerPerson: 200,
+                dinnerPerPerson: 120,
+            }
+        },
+        vendors: [{id: 1, name: 'Design Tools', cost: 55000}, {id: 2, name: 'UXR Tools', cost: 32000}],
+        consultants: [{id: 1, name: 'Project Alpha', cost: 75000}]
+    };
+    let previousYearData = { headcount: 2604000, tne: 84375, vendors: 350000, consultants: 50000 };
+    let nextItemId = 102; 
+
+    // --- DOM ELEMENTS ---
+    const DOMElements = {
+        prevYearHc: document.getElementById('prev-year-hc'),
+        prevYearTne: document.getElementById('prev-year-tne'),
+        prevYearVendors: document.getElementById('prev-year-vendors'),
+        prevYearConsultants: document.getElementById('prev-year-consultants'),
+        hcCount: document.getElementById('hc-count'),
+        hcAvgSalary: document.getElementById('hc-avg-salary'),
+        hcBenefitsRate: document.getElementById('hc-benefits-rate'),
+        individualTripsContainer: document.getElementById('individual-trips-inputs'),
+        addTripBtn: document.getElementById('add-trip-btn'),
+        tneGroupAttendees: document.getElementById('tne-group-attendees'),
+        tneGroupFlight: document.getElementById('tne-group-flight'),
+        tneGroupHotel: document.getElementById('tne-group-hotel'),
+        tneGroupNights: document.getElementById('tne-group-nights'),
+        tneGroupPerDiem: document.getElementById('tne-group-perdiem'),
+        tneTeamActivity: document.getElementById('tne-team-activity'),
+        tneTeamDinner: document.getElementById('tne-team-dinner'),
+        vendorInputsContainer: document.getElementById('vendor-inputs'),
+        consultantInputsContainer: document.getElementById('consultant-inputs'),
+        addVendorBtn: document.getElementById('add-vendor-btn'),
+        addConsultantBtn: document.getElementById('add-consultant-btn'),
+        summaryTotal: document.getElementById('summary-total'),
+        summaryYoY: document.getElementById('summary-yoy'),
+        breakdownTableBody: document.getElementById('breakdown-table-body'),
+        costChartCanvas: document.getElementById('cost-chart').getContext('2d'),
+        exportCsvBtn: document.getElementById('export-csv'),
+        toggleHcPlannerBtn: document.getElementById('toggle-hc-planner-btn'),
+        closeHcPlannerBtn: document.getElementById('close-hc-planner-btn'),
+        hcPlannerContainer: document.getElementById('hc-planner-container'),
+        plannerTotalBudget: document.getElementById('planner-total-budget'),
+        plannerContractMonths: document.getElementById('planner-contract-months'),
+        plannerContractRate: document.getElementById('planner-contract-rate'),
+        plannerResultContractCost: document.getElementById('planner-result-contract-cost'),
+        plannerResultRemaining: document.getElementById('planner-result-remaining'),
+        plannerResultFteSalary: document.getElementById('planner-result-fte-salary'),
+        plannerResultFteMonths: document.getElementById('planner-result-fte-months'),
+    };
+    let costChart;
+
+    // --- UTILITY FUNCTIONS ---
+    const formatCurrency = (value) => {
+      if (isNaN(value)) return '$0';
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+    }
+    const formatPercentage = (value) => {
+        if (!isFinite(value) || isNaN(value)) return 'N/A';
+        const sign = value > 0 ? '+' : '';
+        return `${sign}${(value * 100).toFixed(1)}%`;
+    };
+
+    // --- CALCULATION LOGIC ---
+    function calculateCosts() {
+        const hc = forecastData.headcount;
+        const tne = forecastData.tne;
+
+        const headcountCost = (hc.count * hc.avgSalary) * (1 + hc.benefitsRate);
+        
+        const individualTripsCost = tne.individualTrips.reduce((sum, trip) => sum + trip.flight + trip.hotel + trip.ground + trip.perDiem, 0);
+        const groupTravelCostPerPerson = tne.groupTravel.avgFlight + (tne.groupTravel.hotelPerNight * tne.groupTravel.nights) + (tne.groupTravel.perDiem * (tne.groupTravel.nights + 1));
+        const groupTravelCost = tne.groupTravel.attendees * groupTravelCostPerPerson;
+        const teamActivitiesCost = hc.count * (tne.teamActivities.activityPerPerson + tne.teamActivities.dinnerPerPerson);
+        const tneCost = individualTripsCost + groupTravelCost + teamActivitiesCost;
+
+        const vendorCost = forecastData.vendors.reduce((sum, v) => sum + v.cost, 0);
+        const consultantCost = forecastData.consultants.reduce((sum, c) => sum + c.cost, 0);
+        const totalCost = headcountCost + tneCost + vendorCost + consultantCost;
+
+        let details = { 
+            'Headcount': headcountCost, 
+            'T&E: Individual Trips': individualTripsCost,
+            'T&E: Group Travel': groupTravelCost,
+            'T&E: Team Activities': teamActivitiesCost,
+        };
+        forecastData.vendors.forEach(v => details[`Vendor: ${v.name}`] = v.cost);
+        forecastData.consultants.forEach(c => details[`Consultant: ${c.name}`] = c.cost);
+        
+        return { total: totalCost, headcount: headcountCost, tne: tneCost, vendors: vendorCost, consultants: consultantCost, details };
+    }
+    
+    // --- UI RENDERING ---
+    function renderAll() {
+        const currentYearCosts = calculateCosts();
+        const previousYearTotal = Object.values(previousYearData).reduce((s, v) => s + (v || 0), 0);
+        
+        DOMElements.summaryTotal.textContent = formatCurrency(currentYearCosts.total);
+        const yoyChange = previousYearTotal > 0 ? (currentYearCosts.total - previousYearTotal) / previousYearTotal : (currentYearCosts.total > 0 ? Infinity : 0);
+        DOMElements.summaryYoY.textContent = formatPercentage(yoyChange);
+        DOMElements.summaryYoY.className = 'text-4xl font-bold text-gray-800 mt-2';
+        if (yoyChange > 0.001) DOMElements.summaryYoY.classList.add('text-red-600');
+        else if (yoyChange < -0.001) DOMElements.summaryYoY.classList.add('text-green-600');
+
+        renderBreakdown(currentYearCosts);
+        renderChart(currentYearCosts);
+    }
+    
+    function renderBreakdown(currentCosts) {
+        DOMElements.breakdownTableBody.innerHTML = '';
+        const generateRow = (label, current, prev, isBold = false, isSub = false) => {
+            const prevVal = prev || 0;
+            const variance = prevVal !== 0 && !isNaN(prevVal) ? (current - prevVal) / prevVal : (current > 0 ? Infinity : 0);
+            const varianceText = formatPercentage(variance);
+            let varianceColor = 'text-gray-700';
+            if (variance > 0.001) varianceColor = 'text-red-500';
+            if (variance < -0.001) varianceColor = 'text-green-600';
+            return `<tr class="${isBold ? 'bg-gray-50' : ''}"><td class="py-3 px-6 text-left ${isBold ? 'font-bold text-gray-800' : 'text-gray-600'} ${isSub ? 'pl-10' : ''}">${label}</td><td class="py-3 px-6 text-right font-mono">${formatCurrency(current)}</td><td class="py-3 px-6 text-right font-mono">${formatCurrency(prevVal)}</td><td class="py-3 px-6 text-right font-mono ${varianceColor}">${varianceText}</td></tr>`;
+        };
+
+        DOMElements.breakdownTableBody.innerHTML += generateRow('Headcount', currentCosts.headcount, previousYearData.headcount, true);
+        DOMElements.breakdownTableBody.innerHTML += generateRow('T&E', currentCosts.tne, previousYearData.tne, true);
+        DOMElements.breakdownTableBody.innerHTML += generateRow('Individual Trips', currentCosts.details['T&E: Individual Trips'], NaN, false, true);
+        DOMElements.breakdownTableBody.innerHTML += generateRow('Group Travel', currentCosts.details['T&E: Group Travel'], NaN, false, true);
+        DOMElements.breakdownTableBody.innerHTML += generateRow('Team Activities', currentCosts.details['T&E: Team Activities'], NaN, false, true);
+        DOMElements.breakdownTableBody.innerHTML += generateRow('Vendors', currentCosts.vendors, previousYearData.vendors, true);
+        forecastData.vendors.forEach(v => {
+            DOMElements.breakdownTableBody.innerHTML += generateRow(v.name, v.cost, NaN, false, true);
+        });
+        DOMElements.breakdownTableBody.innerHTML += generateRow('Consultants', currentCosts.consultants, previousYearData.consultants, true);
+        forecastData.consultants.forEach(c => {
+            DOMElements.breakdownTableBody.innerHTML += generateRow(c.name, c.cost, NaN, false, true);
+        });
+        
+        const prevTotal = Object.values(previousYearData).reduce((s, v) => s + (v || 0), 0);
+        DOMElements.breakdownTableBody.innerHTML += generateRow('Grand Total', currentCosts.total, prevTotal, true).replace('bg-gray-50', 'bg-brand-accent');
+    }
+
+    function renderChart(currentCosts) {
+        const chartData = [currentCosts.headcount, currentCosts.tne, currentCosts.vendors, currentCosts.consultants];
+        const labels = ['Headcount', 'T&E', 'Vendors', 'Consultants'];
+        const colors = ['#8F1F57', '#DD388B', '#F5DEEA', '#b86d96'];
+        if (costChart) {
+            costChart.data.datasets[0].data = chartData;
+            costChart.update();
+        } else {
+            costChart = new Chart(DOMElements.costChartCanvas, {
+                type: 'doughnut',
+                data: { labels, datasets: [{ data: chartData, backgroundColor: colors, borderColor: '#ffffff', borderWidth: 4 }] },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: { legend: { position: 'bottom' } }
+                 }
+            });
+        }
+    }
+
+    // --- DYNAMIC ITEM MANAGEMENT ---
+    function createDynamicInput(item, container, type) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center space-x-2';
+        div.innerHTML = `
+            <input type="text" value="${item.name}" data-id="${item.id}" data-type="${type}" class="flex-grow item-name form-input" placeholder="Item Name">
+            <input type="number" value="${item.cost}" data-id="${item.id}" data-type="${type}" class="w-32 item-cost form-input" placeholder="Cost ($)">
+            <button data-id="${item.id}" data-type="${type}" class="remove-item-btn text-red-500 hover:text-red-700 text-2xl font-bold">&times;</button>
+        `;
+        container.appendChild(div);
+    }
+    
+    function createIndividualTripInput(trip, container) {
+        const div = document.createElement('div');
+        div.className = 'grid grid-cols-6 gap-2 items-center';
+        div.innerHTML = `
+            <input type="text" value="${trip.name}" data-id="${trip.id}" data-field="name" class="trip-input col-span-2" placeholder="Trip Name">
+            <input type="number" value="${trip.flight}" data-id="${trip.id}" data-field="flight" class="trip-input" placeholder="0">
+            <input type="number" value="${trip.hotel}" data-id="${trip.id}" data-field="hotel" class="trip-input" placeholder="0">
+            <input type="number" value="${trip.ground}" data-id="${trip.id}" data-field="ground" class="trip-input" placeholder="0">
+            <div class="flex items-center">
+                 <input type="number" value="${trip.perDiem}" data-id="${trip.id}" data-field="perDiem" class="trip-input" placeholder="0">
+                 <button data-id="${trip.id}" data-type="individualTrips" class="remove-item-btn text-red-500 hover:text-red-700 text-xl font-bold ml-2">&times;</button>
+            </div>
+        `;
+        container.appendChild(div);
+    }
+
+    function renderDynamicLists() {
+        DOMElements.vendorInputsContainer.innerHTML = '';
+        DOMElements.consultantInputsContainer.innerHTML = '';
+        DOMElements.individualTripsContainer.innerHTML = '';
+        forecastData.vendors.forEach(v => createDynamicInput(v, DOMElements.vendorInputsContainer, 'vendors'));
+        forecastData.consultants.forEach(c => createDynamicInput(c, DOMElements.consultantInputsContainer, 'consultants'));
+        forecastData.tne.individualTrips.forEach(t => createIndividualTripInput(t, DOMElements.individualTripsContainer));
+    }
+
+    function handleAddItem(type) {
+        let newItem;
+        if (type === 'individualTrips') {
+            newItem = { id: nextItemId++, name: 'New Trip', flight: 0, hotel: 0, ground: 0, perDiem: 0 };
+            forecastData.tne.individualTrips.push(newItem);
+        } else {
+             newItem = { id: nextItemId++, name: '', cost: 0 };
+             forecastData[type].push(newItem);
+        }
+        renderDynamicLists();
+        renderAll();
+    }
+
+    // --- HC PLANNER LOGIC ---
+    function calculatePlanner() {
+        const totalBudget = parseFloat(DOMElements.plannerTotalBudget.value) || 0;
+        const contractMonths = parseFloat(DOMElements.plannerContractMonths.value) || 0;
+        const contractRate = parseFloat(DOMElements.plannerContractRate.value) || 0;
+        
+        const contractCost = contractMonths * contractRate;
+        const remainingBudget = totalBudget - contractCost;
+        const fteMonths = 12 - contractMonths;
+        
+        const benefitsRate = parseFloat(DOMElements.hcBenefitsRate.value / 100) || forecastData.headcount.benefitsRate;
+        let fteSalary = 0;
+        if(fteMonths > 0 && remainingBudget > 0) {
+            const fteBaseForPeriod = remainingBudget / (1 + benefitsRate);
+            fteSalary = (fteBaseForPeriod / fteMonths) * 12;
+        }
+
+        DOMElements.plannerResultContractCost.textContent = formatCurrency(contractCost);
+        DOMElements.plannerResultRemaining.textContent = formatCurrency(remainingBudget);
+        DOMElements.plannerResultFteSalary.textContent = formatCurrency(fteSalary);
+        DOMElements.plannerResultFteMonths.textContent = `for the remaining ${fteMonths} months`;
+    }
+
+    // --- EVENT LISTENERS ---
+    function setupEventListeners() {
+        const inputs = {
+            'prev-year-hc': (v) => previousYearData.headcount = v,
+            'prev-year-tne': (v) => previousYearData.tne = v,
+            'prev-year-vendors': (v) => previousYearData.vendors = v,
+            'prev-year-consultants': (v) => previousYearData.consultants = v,
+            'hc-count': (v) => { forecastData.headcount.count = v; },
+            'hc-avg-salary': (v) => forecastData.headcount.avgSalary = v,
+            'hc-benefits-rate': (v) => { forecastData.headcount.benefitsRate = v / 100; calculatePlanner(); },
+            'tne-group-attendees': (v) => forecastData.tne.groupTravel.attendees = v,
+            'tne-group-flight': (v) => forecastData.tne.groupTravel.avgFlight = v,
+            'tne-group-hotel': (v) => forecastData.tne.groupTravel.hotelPerNight = v,
+            'tne-group-nights': (v) => forecastData.tne.groupTravel.nights = v,
+            'tne-group-perdiem': (v) => forecastData.tne.groupTravel.perDiem = v,
+            'tne-team-activity': (v) => forecastData.tne.teamActivities.activityPerPerson = v,
+            'tne-team-dinner': (v) => forecastData.tne.teamActivities.dinnerPerPerson = v,
+        };
+
+        for (const [id, updater] of Object.entries(inputs)) {
+            document.getElementById(id).addEventListener('input', e => {
+                updater(parseFloat(e.target.value) || 0);
+                renderAll();
+            });
+        }
+        
+        DOMElements.addVendorBtn.addEventListener('click', () => handleAddItem('vendors'));
+        DOMElements.addConsultantBtn.addEventListener('click', () => handleAddItem('consultants'));
+        DOMElements.addTripBtn.addEventListener('click', () => handleAddItem('individualTrips'));
+        
+        document.body.addEventListener('input', e => {
+            const target = e.target;
+            if (target.matches('.item-name, .item-cost')) {
+                const id = parseInt(target.dataset.id);
+                const type = target.dataset.type;
+                const field = target.classList.contains('item-name') ? 'name' : 'cost';
+                const value = field === 'cost' ? parseFloat(target.value) || 0 : target.value;
+                const item = forecastData[type].find(i => i.id === id);
+                if (item) { item[field] = value; renderAll(); }
+            } else if (target.matches('.trip-input, .trip-name-input')) {
+                 const id = parseInt(target.dataset.id);
+                 const field = target.dataset.field;
+                 const value = target.matches('.trip-name-input') ? target.value : parseFloat(target.value) || 0;
+                 const trip = forecastData.tne.individualTrips.find(t => t.id === id);
+                 if(trip) { trip[field] = value; renderAll(); }
+            }
+        });
+        
+        document.body.addEventListener('click', e => {
+            const target = e.target;
+            if (target.matches('.remove-item-btn')) {
+                const id = parseInt(target.dataset.id);
+                const type = target.dataset.type;
+                if (type === 'vendors' || type === 'consultants') {
+                    forecastData[type] = forecastData[type].filter(item => item.id !== id);
+                } else if (type === 'individualTrips') {
+                    forecastData.tne.individualTrips = forecastData.tne.individualTrips.filter(t => t.id !== id);
+                }
+                renderDynamicLists();
+                renderAll();
+            }
+        });
+
+        DOMElements.toggleHcPlannerBtn.addEventListener('click', () => DOMElements.hcPlannerContainer.classList.toggle('hidden'));
+        DOMElements.closeHcPlannerBtn.addEventListener('click', () => DOMElements.hcPlannerContainer.classList.add('hidden'));
+        [DOMElements.plannerTotalBudget, DOMElements.plannerContractMonths, DOMElements.plannerContractRate].forEach(el => {
+            el.addEventListener('input', calculatePlanner);
+        });
+
+        DOMElements.exportCsvBtn.addEventListener('click', exportToCSV);
+    }
+    
+    function exportToCSV() {
+        const currentCosts = calculateCosts();
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Category,Line Item,Current Year,Previous Year\n";
+
+        const addRow = (cat, item, current, prev) => {
+            csvContent += `"${cat}","${item}","${current}","${prev || 0}"\n`;
+        };
+
+        addRow('Category Total', 'Headcount', currentCosts.headcount, previousYearData.headcount);
+        addRow('Category Total', 'T&E', currentCosts.tne, previousYearData.tne);
+        addRow('T&E Detail', 'Individual Trips', currentCosts.details['T&E: Individual Trips'], 'N/A');
+        addRow('T&E Detail', 'Group Travel', currentCosts.details['T&E: Group Travel'], 'N/A');
+        addRow('T&E Detail', 'Team Activities', currentCosts.details['T&E: Team Activities'], 'N/A');
+        addRow('Category Total', 'Vendors', currentCosts.vendors, previousYearData.vendors);
+        forecastData.vendors.forEach(v => addRow('Vendor Detail', v.name, v.cost, 'N/A'));
+        addRow('Category Total', 'Consultants', currentCosts.consultants, previousYearData.consultants);
+        forecastData.consultants.forEach(c => addRow('Consultant Detail', c.name, c.cost, 'N/A'));
+        
+        const prevTotal = Object.values(previousYearData).reduce((s, v) => s + (v || 0), 0);
+        csvContent += "\n";
+        addRow('Grand Total', 'Total Forecast', currentCosts.total, prevTotal);
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "design_team_forecast.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // --- INITIALIZATION ---
+    function populateInputs() {
+        DOMElements.prevYearHc.value = previousYearData.headcount;
+        DOMElements.prevYearTne.value = previousYearData.tne;
+        DOMElements.prevYearVendors.value = previousYearData.vendors;
+        DOMElements.prevYearConsultants.value = previousYearData.consultants;
+        
+        DOMElements.hcCount.value = forecastData.headcount.count;
+        DOMElements.hcAvgSalary.value = forecastData.headcount.avgSalary;
+        DOMElements.hcBenefitsRate.value = forecastData.headcount.benefitsRate * 100;
+        
+        DOMElements.tneGroupAttendees.value = forecastData.tne.groupTravel.attendees;
+        DOMElements.tneGroupFlight.value = forecastData.tne.groupTravel.avgFlight;
+        DOMElements.tneGroupHotel.value = forecastData.tne.groupTravel.hotelPerNight;
+        DOMElements.tneGroupNights.value = forecastData.tne.groupTravel.nights;
+        DOMElements.tneGroupPerDiem.value = forecastData.tne.groupTravel.perDiem;
+        DOMElements.tneTeamActivity.value = forecastData.tne.teamActivities.activityPerPerson;
+        DOMElements.tneTeamDinner.value = forecastData.tne.teamActivities.dinnerPerPerson;
+    }
+
+    window.onload = () => {
+        populateInputs();
+        renderDynamicLists();
+        setupEventListeners();
+        renderAll();
+    };
+    </script>
+</body>
+</html>

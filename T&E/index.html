@@ -1,0 +1,224 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team T&E Budget Estimator</title>
+    <meta name="description" content="Calculate travel and entertainment costs for team events, offsites, and group activities.">
+    <meta name="keywords" content="travel budget, team events, T&E calculator, offsite planning, event budgeting">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✈️ Team T&E Budget Estimator</h1>
+            <p>Calculate travel and entertainment costs for team events, offsites, and group activities</p>
+        
+            
+            <div class="disclaimer">
+                <strong>Disclaimer:</strong> This is a planning tool to help estimate T&E costs. Actual expenses may vary based on booking timing, availability, and individual preferences. Always add a buffer for unexpected costs.
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('estimate-mode')">Estimate Mode</button>
+            <button class="tab" onclick="showTab('budget-mode')">Budget Mode</button>
+        </div>
+
+        <!-- Estimate Mode: Calculate total cost -->
+        <div id="estimate-mode" class="tab-content active">
+            <div class="estimator-grid">
+                <div class="estimator-card">
+                    <h2>🏨 Event Details</h2>
+                    
+                    <div class="input-group">
+                        <label>Event Location</label>
+                        <input type="text" id="event-location" value="San Francisco, CA" placeholder="City, State/Country">
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Number of Nights</label>
+                            <input type="number" id="nights" value="3" oninput="calculateEstimate()">
+                        </div>
+                        <div class="input-group">
+                            <label>Average Room Rate (per night)</label>
+                            <input type="number" id="room-rate" value="250" oninput="calculateEstimate()">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Domestic Travelers</label>
+                            <input type="number" id="domestic-travelers" value="8" oninput="calculateEstimate()">
+                        </div>
+                        <div class="input-group">
+                            <label>International Travelers</label>
+                            <input type="number" id="international-travelers" value="2" oninput="calculateEstimate()">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Domestic Flight Cost (avg)</label>
+                            <input type="number" id="domestic-flight" value="400" oninput="calculateEstimate()">
+                        </div>
+                        <div class="input-group">
+                            <label>International Flight Cost (avg)</label>
+                            <input type="number" id="international-flight" value="1200" oninput="calculateEstimate()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="estimator-card">
+                    <h2>💰 Per Diem & Allowances</h2>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Daily Per Diem (per person)</label>
+                            <input type="number" id="per-diem" value="75" oninput="calculateEstimate()">
+                        </div>
+                        <div class="input-group">
+                            <label>Travel/Gas Allowance (per person)</label>
+                            <input type="number" id="travel-allowance" value="150" oninput="calculateEstimate()">
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Team Activities Budget (total)</label>
+                        <input type="number" id="activities-budget" value="2000" oninput="calculateEstimate()">
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Team Dinners (number of dinners)</label>
+                            <input type="number" id="team-dinners" value="2" oninput="calculateEstimate()">
+                        </div>
+                        <div class="input-group">
+                            <label>Cost per Person per Dinner</label>
+                            <input type="number" id="dinner-cost" value="85" oninput="calculateEstimate()">
+                        </div>
+                    </div>
+
+                    <div class="result-box">
+                        <h3>Total Estimated Cost</h3>
+                        <div class="result-value" id="total-estimate">$0</div>
+                    </div>
+
+                    <div class="result-box">
+                        <h3>Cost per Person</h3>
+                        <div class="result-value" id="cost-per-person">$0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Breakdown -->
+            <div class="estimator-card">
+                <h2>📊 Cost Breakdown</h2>
+                <div id="cost-breakdown">
+                    <!-- Breakdown items will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Mode: Work backwards from budget -->
+        <div id="budget-mode" class="tab-content">
+            <div class="estimator-grid">
+                <div class="estimator-card">
+                    <h2>🎯 Budget Planning</h2>
+                    
+                    <div class="input-group">
+                        <label>Total Available Budget</label>
+                        <input type="number" id="total-budget" value="25000" oninput="calculateBudgetMode()">
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Total Team Members</label>
+                            <input type="number" id="budget-team-size" value="10" oninput="calculateBudgetMode()">
+                        </div>
+                        <div class="input-group">
+                            <label>Average Room Rate (per night)</label>
+                            <input type="number" id="budget-room-rate" value="250" oninput="calculateBudgetMode()">
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Average Flight Cost (per person)</label>
+                            <input type="number" id="budget-flight-cost" value="600" oninput="calculateBudgetMode()">
+                        </div>
+                        <div class="input-group">
+                            <label>Daily Per Diem (per person)</label>
+                            <input type="number" id="budget-per-diem" value="75" oninput="calculateBudgetMode()">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Activities & Dinners Budget</label>
+                            <input type="number" id="budget-activities" value="3000" oninput="calculateBudgetMode()">
+                        </div>
+                        <div class="input-group">
+                            <label>Misc/Travel Allowances</label>
+                            <input type="number" id="budget-misc" value="1500" oninput="calculateBudgetMode()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="estimator-card">
+                    <h2>📈 Budget Analysis</h2>
+                    
+                    <div class="result-box">
+                        <h3>Recommended Hotel Nights</h3>
+                        <div class="result-value" id="recommended-nights">0 nights</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Budget Remaining/Over</h3>
+                        <div class="result-value" id="budget-variance">$0</div>
+                    </div>
+                    
+                    <div class="result-box">
+                        <h3>Cost per Person (with recommended nights)</h3>
+                        <div class="result-value" id="budget-cost-per-person">$0</div>
+                    </div>
+
+                    <div class="note">
+                        <strong>Budget Planning Tips:</strong> Consider adjusting room rates, reducing activities budget, or limiting covered nights to stay within budget. Local accommodations or shared rooms can reduce costs significantly.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-card">
+            <h2>💡 T&E Planning Tips</h2>
+            <p>Use this estimator to plan team events and negotiate with vendors for group rates</p>
+            <div class="summary-stats">
+                <div class="stat-item">
+                    <h4>Book Early</h4>
+                    <div class="value">Save 20-30%</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Group Rates</h4>
+                    <div class="value">10+ rooms</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Budget Buffer</h4>
+                    <div class="value">Add 10-15%</div>
+                </div>
+                <div class="stat-item">
+                    <h4>Compare Options</h4>
+                    <div class="value">Multiple venues</div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Created by <a href="https://changying.substack.com" target="_blank">Chang Ying (Z) Zheng — Design Operations</a> | <a href="https://www.linkedin.com/in/changyingz/">Contact</a></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
