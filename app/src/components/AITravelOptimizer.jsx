@@ -21,11 +21,13 @@ const AITravelOptimizer = ({ estimateData }) => {
         dates: estimateData.dates
       };
       
+      console.log('Sending travel optimization request:', data);
       const result = await aiService.optimizeTravel(data);
+      console.log('Received travel optimization result:', result);
       setRecommendations(result);
     } catch (err) {
       setError('Failed to get AI recommendations. Please try again.');
-      console.error(err);
+      console.error('Travel optimization error:', err);
     } finally {
       setLoading(false);
     }

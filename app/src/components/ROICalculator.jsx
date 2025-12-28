@@ -126,7 +126,7 @@ const DesignSystemCalculator = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Expected Efficiency Gain (%)</label>
-            <p className="text-xs text-gray-600 mb-2">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
               (Target Efficiency - Baseline Efficiency) / Baseline Efficiency × 100%
             </p>
             <input

@@ -20,6 +20,7 @@ const HeadcountPlanning = () => {
   ];
 
   const [levels, setLevels] = useLocalStorage('headcountLevelsV2', defaultLevels);
+  const [benefitsRate, setBenefitsRate] = useLocalStorage('headcountBenefitsRate', 0.28);
   const [newLevel, setNewLevel] = useState({
     code: '',
     type: 'IC',
@@ -99,6 +100,29 @@ const HeadcountPlanning = () => {
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl text-center border border-gray-200 dark:border-gray-700 shadow-sm">
           <h4 className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wider">Average Salary</h4>
           <p className="text-4xl font-bold text-gray-900 dark:text-white mt-2">{formatCurrency(avgSalary)}</p>
+        </div>
+      </div>
+
+      {/* Benefits Rate Configuration */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Benefits & Tax Rate</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          Set the benefits and tax rate to be applied to headcount costs. This typically includes employer taxes, health insurance, 401k matching, and other benefits.
+        </p>
+        <div className="max-w-xs">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Benefits & Tax Rate (%)
+          </label>
+          <input
+            type="number"
+            step="0.01"
+            value={benefitsRate * 100}
+            onChange={(e) => setBenefitsRate(parseFloat(e.target.value) / 100 || 0)}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+          />
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            Typical range: 25-35%. This will be used when importing to Budget Forecast.
+          </p>
         </div>
       </div>
 

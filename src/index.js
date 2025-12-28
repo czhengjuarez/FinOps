@@ -66,42 +66,41 @@ async function handleTravelOptimization(request, env, corsHeaders) {
   const data = await request.json();
   const { attendees, nights, location, budget, dates } = data;
 
-  const prompt = `You are a travel planning expert. Analyze this team event:
+  const prompt = `Analyze this team event and provide concise recommendations:
 - Attendees: ${attendees}
 - Duration: ${nights} nights
-- Preferred location: ${location || 'flexible'}
+- Location: ${location || 'flexible'}
 - Budget: $${budget || 'flexible'}
-- Proposed dates: ${dates || 'flexible'}
+- Dates: ${dates || 'flexible'}
 
-Provide specific, actionable recommendations in JSON format:
+Return ONLY valid JSON (no extra text):
 {
   "optimalTiming": {
     "bestMonths": ["month1", "month2"],
-    "reasoning": "explanation",
-    "potentialSavings": "percentage"
+    "reasoning": "brief explanation",
+    "potentialSavings": "15%"
   },
   "locationRecommendations": [
     {
       "city": "city name",
-      "estimatedCostPerPerson": number,
+      "estimatedCostPerPerson": 2000,
       "pros": ["pro1", "pro2"],
       "cons": ["con1"]
     }
   ],
   "costOptimization": {
-    "flightTips": "specific advice",
-    "hotelTips": "specific advice",
-    "estimatedTotal": number,
-    "confidenceLevel": "high/medium/low"
-  },
-  "riskFactors": ["risk1", "risk2"]
+    "flightTips": "brief tip",
+    "hotelTips": "brief tip",
+    "estimatedTotal": 20000
+  }
 }`;
 
   const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
     messages: [
-      { role: 'system', content: 'You are a financial planning assistant specializing in travel optimization. Always respond with valid JSON.' },
+      { role: 'system', content: 'You are a financial planning assistant specializing in travel optimization. Always respond with valid, complete JSON. Keep responses concise.' },
       { role: 'user', content: prompt }
-    ]
+    ],
+    max_tokens: 1024
   });
 
   return new Response(JSON.stringify({
@@ -115,50 +114,41 @@ Provide specific, actionable recommendations in JSON format:
 // AI Feature 2: ROI Calculator Enhancement
 async function handleROIAnalysis(request, env, corsHeaders) {
   const data = await request.json();
-  const { investment, timeSavings, qualityImprovements, efficiencyGains, context } = data;
+  const { investment, timeSavings, qualityImprovements, efficiencyGains, context, question } = data;
 
-  const prompt = `You are a financial analyst specializing in ROI calculations. Analyze this investment:
+  const prompt = `Analyze this ROI investment and return ONLY valid JSON with calculated numeric values (no expressions):
 
-Investment Details:
-- Total Investment: $${investment}
-- Time Savings: ${timeSavings.hours} hours/month at $${timeSavings.hourlyRate}/hour
-- Quality Improvements: ${qualityImprovements.defectReduction}% defect reduction, $${qualityImprovements.costPerDefect} per defect
-- Efficiency Gains: ${efficiencyGains.processImprovement}% improvement, $${efficiencyGains.currentCost} current cost
-- Context: ${context || 'Design operations initiative'}
+Investment: $${investment}
+Time Savings: ${timeSavings.hours} hrs/month × $${timeSavings.hourlyRate}/hr
+Quality: ${qualityImprovements.defectReduction}% defect reduction × $${qualityImprovements.costPerDefect}/defect
+Efficiency: ${efficiencyGains.processImprovement}% improvement on $${efficiencyGains.currentCost}
+Context: ${context || 'Design operations'}
+${question ? `Question: ${question}` : ''}
 
-Provide detailed analysis in JSON format:
+Return ONLY this JSON structure with CALCULATED NUMBERS (not math expressions):
 {
   "roiAnalysis": {
-    "totalAnnualBenefit": number,
-    "netBenefit": number,
-    "roiPercentage": number,
-    "paybackMonths": number,
-    "confidenceLevel": "high/medium/low"
+    "totalAnnualBenefit": 500000,
+    "netBenefit": 350000,
+    "roiPercentage": 233,
+    "paybackMonths": 5,
+    "confidenceLevel": "high"
   },
-  "insights": [
-    "key insight 1",
-    "key insight 2",
-    "key insight 3"
-  ],
-  "recommendations": [
-    "actionable recommendation 1",
-    "actionable recommendation 2"
-  ],
-  "riskFactors": [
-    "potential risk 1",
-    "potential risk 2"
-  ],
+  "insights": ["insight 1", "insight 2"],
+  "recommendations": ["rec 1", "rec 2"],
+  "riskFactors": ["risk 1"],
   "benchmarks": {
-    "industryAverage": "comparison to industry standards",
-    "yourPosition": "where you stand"
+    "industryAverage": "200-300% typical",
+    "yourPosition": "above average"
   }
 }`;
 
   const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
     messages: [
-      { role: 'system', content: 'You are a financial ROI analyst. Always respond with valid JSON and specific numbers.' },
+      { role: 'system', content: 'You are a financial ROI analyst. Always respond with valid, complete JSON. Keep responses concise.' },
       { role: 'user', content: prompt }
-    ]
+    ],
+    max_tokens: 1024
   });
 
   return new Response(JSON.stringify({
@@ -224,9 +214,10 @@ Analyze and provide strategic recommendations in JSON format:
 
   const response = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
     messages: [
-      { role: 'system', content: 'You are a strategic financial advisor. Always respond with valid JSON and actionable insights.' },
+      { role: 'system', content: 'You are a strategic financial advisor. Always respond with valid, complete JSON. Keep responses concise.' },
       { role: 'user', content: prompt }
-    ]
+    ],
+    max_tokens: 1024
   });
 
   return new Response(JSON.stringify({

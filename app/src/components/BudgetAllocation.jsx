@@ -157,7 +157,7 @@ const BudgetAllocation = () => {
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Holdback Percentage (%)
             </label>
             <input
@@ -259,7 +259,7 @@ const BudgetAllocation = () => {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Focus Area Name</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Focus Area Name</label>
               <input
                 type="text"
                 value={newFocusArea.name}
@@ -331,7 +331,7 @@ const BudgetAllocation = () => {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes</label>
               <input
                 type="text"
                 value={newFocusArea.notes}

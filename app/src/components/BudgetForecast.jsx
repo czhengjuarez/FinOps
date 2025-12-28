@@ -65,12 +65,15 @@ const BudgetForecast = () => {
 
   const importFromHeadcount = () => {
     const headcountData = localStorage.getItem('headcountLevelsV2');
+    const benefitsRateData = localStorage.getItem('headcountBenefitsRate');
+    
     if (!headcountData) {
       alert('No headcount data found. Please enter data in the Headcount tab first.');
       return;
     }
 
     const levels = JSON.parse(headcountData);
+    const benefitsRate = benefitsRateData ? JSON.parse(benefitsRateData) : 0.28;
     const totalHeadcount = levels.reduce((sum, level) => sum + level.count, 0);
     const totalSalaryCost = levels.reduce((sum, level) => sum + (level.count * level.avgSalary), 0);
     const avgSalary = totalHeadcount > 0 ? totalSalaryCost / totalHeadcount : 0;
@@ -90,7 +93,7 @@ const BudgetForecast = () => {
       headcount: {
         count: totalHeadcount,
         avgSalary: Math.round(avgSalary),
-        benefitsRate: forecastData.headcount.benefitsRate,
+        benefitsRate: benefitsRate,
       },
     });
 
@@ -135,8 +138,8 @@ const BudgetForecast = () => {
           ground: travelAllowanceCost,
           perDiem: perDiemCost + dinnerCost + estimate.activitiesBudget,
         }],
-        groupTravel: forecastData.tne.groupTravel,
-        teamActivities: forecastData.tne.teamActivities,
+        groupTravel: [],
+        teamActivities: [],
       },
     });
 
@@ -201,16 +204,20 @@ const BudgetForecast = () => {
     );
     
     const groupTravelCost = tne.groupTravel.reduce((sum, event) => {
-      const costPerPerson =
-        event.avgFlight +
-        event.hotelPerNight * event.nights +
-        event.perDiem * (event.nights + 1);
-      return sum + (event.attendees * costPerPerson);
+      const attendees = event.attendees || 0;
+      const avgFlight = event.avgFlight || 0;
+      const hotelPerNight = event.hotelPerNight || 0;
+      const nights = event.nights || 0;
+      const perDiem = event.perDiem || 0;
+      const costPerPerson = avgFlight + (hotelPerNight * nights) + (perDiem * (nights + 1));
+      return sum + (attendees * costPerPerson);
     }, 0);
     
     const teamActivitiesCost = tne.teamActivities.reduce((sum, activity) => {
       const attendees = activity.attendees || 0;
-      return sum + (attendees * (activity.activityPerPerson + activity.dinnerPerPerson));
+      const activityPerPerson = activity.activityPerPerson || 0;
+      const dinnerPerPerson = activity.dinnerPerPerson || 0;
+      return sum + (attendees * (activityPerPerson + dinnerPerPerson));
     }, 0);
     
     const tneCost = individualTripsCost + groupTravelCost + teamActivitiesCost;

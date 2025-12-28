@@ -7,6 +7,7 @@ const AIROIAnalyzer = ({ roiData }) => {
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState(null);
+  const [question, setQuestion] = useState('');
 
   const getAnalysis = async () => {
     setLoading(true);
@@ -18,7 +19,8 @@ const AIROIAnalyzer = ({ roiData }) => {
         timeSavings: roiData.timeSavings,
         qualityImprovements: roiData.qualityImprovements,
         efficiencyGains: roiData.efficiencyGains,
-        context: roiData.context || 'Design operations initiative'
+        context: roiData.context || 'Design operations initiative',
+        question: question
       };
       
       const result = await aiService.analyzeROI(data);
@@ -42,6 +44,19 @@ const AIROIAnalyzer = ({ roiData }) => {
       <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
         Get AI-powered insights on your ROI calculations, including industry benchmarks, risk factors, and strategic recommendations.
       </p>
+
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Ask a specific question (optional)
+        </label>
+        <input
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          placeholder="e.g., How does this compare to industry standards? What are the risks?"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+        />
+      </div>
 
       <button
         onClick={getAnalysis}
